@@ -23,11 +23,12 @@ namespace ComparadorDeFrases
 
         public static string stringSorting(string text)
         {
-            char[] orderedArray = firstString.ToCharArray();
+            char[] orderedArray = text.ToCharArray();
             Array.Sort(orderedArray);
-            firstString = new string(orderedArray);
-            firstString = firstString.Replace(" ", string.Empty);
+            text = new string(orderedArray);
+            text = text.Replace(" ", string.Empty);
 
+            return string.Empty;
         }
 
         public static void CharCounter(string firstString, string secondString)
