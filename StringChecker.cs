@@ -1,41 +1,53 @@
 ﻿using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 
 namespace ComparadorDeFrases
 {
     class StringChecker
     {
-        public static string Normalizator(string text)
+        private const int arrSize = 2;
+        public static string[] Normalizator(string[] texts)
         {
-            string normalizedString = text.Normalize(NormalizationForm.FormD);
+            string[] normalizedSet = texts;
             StringBuilder stringBuilder = new StringBuilder();
 
-            foreach (var c in normalizedString)
+            for (int i = 0; i < arrSize; i++)
             {
-                if (char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                normalizedSet[i] = texts[i].Normalize(NormalizationForm.FormD);
+                char[] temp = normalizedSet[i].ToCharArray();
+                foreach (char c in temp)
                 {
-                    stringBuilder.Append(c);
+                    if (char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    {
+                        stringBuilder.Append(c);
+                    }
                 }
+                normalizedSet[i] = stringBuilder.ToString();
+                stringBuilder = stringBuilder.Clear();
             }
-            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            return texts;
         }
 
-        public static string stringSorting(string text)
+        public static string[] stringSorting(string[] text)
         {
-            char[] orderedArray = text.ToCharArray();
-            Array.Sort(orderedArray);
-            text = new string(orderedArray);
-            text = text.Replace(" ", string.Empty);
-
-            return string.Empty;
+            int i = 0;
+            foreach (string s in text)
+            {
+                char[] orderedArray = null;
+                orderedArray = text[i].ToCharArray();
+                Array.Sort(orderedArray);
+                text[i] = new string(orderedArray);
+                text[i] = text[i].Replace(" ", string.Empty); i++;
+            }
+            return text;
         }
 
-        public static void CharCounter(string firstString, string secondString)
+        public static string[] CharCounter(string[] texts)
         {
 
-            firstString = Normalizator(firstString);
-
+            Normalizator(texts);
+            return texts;
         }
 
         public static void GetStrings(out string fs, out string ss)
@@ -55,8 +67,14 @@ namespace ComparadorDeFrases
             bool allSame = true;
 
             GetStrings(out string firstString, out string secondString);
+            string[] stringSet = new string[arrSize] { firstString, secondString };
+            stringSorting(stringSet);
+            CharCounter(stringSet);
 
-            CharCounter(firstString, secondString);
+            for (int i = 0; i < arrSize; i++)
+            {
+                Console.WriteLine(stringSet[i]); i++;
+            }
 
             Console.WriteLine("\n\nPress any key to continue...");
             Console.ReadKey();
