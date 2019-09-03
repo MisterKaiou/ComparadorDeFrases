@@ -7,15 +7,15 @@ namespace ComparadorDeFrases
     class StringChecker
     {
         private const int arrSize = 2;
-        public static string[] Normalizator(string[] texts)
+        public static string[] Normalizator(ref string[] texts)
         {
-            string[] normalizedSet = texts;
+            //string[] normalizedSet = texts;
             StringBuilder stringBuilder = new StringBuilder();
 
             for (int i = 0; i < arrSize; i++)
             {
-                normalizedSet[i] = texts[i].Normalize(NormalizationForm.FormD);
-                char[] temp = normalizedSet[i].ToCharArray();
+                texts[i] = texts[i].Normalize(NormalizationForm.FormD);
+                char[] temp = texts[i].ToCharArray();
                 foreach (char c in temp)
                 {
                     if (char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
@@ -23,13 +23,13 @@ namespace ComparadorDeFrases
                         stringBuilder.Append(c);
                     }
                 }
-                normalizedSet[i] = stringBuilder.ToString();
+                texts[i] = stringBuilder.ToString();
                 stringBuilder = stringBuilder.Clear();
             }
             return texts;
         }
 
-        public static string[] stringSorting(string[] text)
+        public static string[] stringSorting(ref string[] text)
         {
             int i = 0;
             foreach (string s in text)
@@ -41,13 +41,6 @@ namespace ComparadorDeFrases
                 text[i] = text[i].Replace(" ", string.Empty); i++;
             }
             return text;
-        }
-
-        public static string[] CharCounter(string[] texts)
-        {
-
-            Normalizator(texts);
-            return texts;
         }
 
         public static void GetStrings(out string fs, out string ss)
@@ -68,8 +61,8 @@ namespace ComparadorDeFrases
 
             GetStrings(out string firstString, out string secondString);
             string[] stringSet = new string[arrSize] { firstString, secondString };
-            stringSorting(stringSet);
-            CharCounter(stringSet);
+            stringSorting(ref stringSet);
+            Normalizator(ref stringSet);
 
             for (int i = 0; i < arrSize; i++)
             {
