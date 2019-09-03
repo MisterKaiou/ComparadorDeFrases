@@ -29,7 +29,7 @@ namespace ComparadorDeFrases
             return texts;
         }
 
-        public static string[] stringSorting(ref string[] text)
+        public static string[] StringSorting(ref string[] text)
         {
             int i = 0;
             foreach (string s in text)
@@ -43,31 +43,50 @@ namespace ComparadorDeFrases
             return text;
         }
 
-        public static void GetStrings(out string fs, out string ss)
+        public static string[] GetStrings(ref string[] stringArray)
         {
-            Console.WriteLine("Por favor, digite a primeira string: ");
-            fs = Console.ReadLine();
-            fs = fs.ToLower();
+            bool isFisrt = true;
 
-            Console.WriteLine("\nPor favor, digite a segunda string: ");
-            ss = Console.ReadLine();
-            ss = ss.ToLower();
+            for (int i = 0; i < stringArray.Length; i++)
+            {
+                if (isFisrt)
+                {
+                    Console.WriteLine("Por favor, digite a primeira string: ");
+                    stringArray[i] = Console.ReadLine();
+                    stringArray[i] = stringArray[i].ToLower();
+                    isFisrt = !isFisrt;
+                }
+                else
+                {
+                    Console.WriteLine("\nPor favor, digite a segunda string: ");
+                    stringArray[i] = Console.ReadLine();
+                    stringArray[i] = stringArray[i].ToLower();
+                }
+            }
+
+            return stringArray;
         }
 
+        public static void StringCompare(ref string[] stringArray)
+        {
+            if (stringArray[0].Equals(stringArray[1]))
+            {
+                Console.WriteLine("\nVocê digitou um anagrama :O");
+            }
+            else
+            {
+                Console.WriteLine("\nEssas palavras não são anagramas :/");
+            }
+        }
 
         static void Main(string[] args)
         {
-            bool allSame = true;
+            string[] stringArray = new string[arrSize];
 
-            GetStrings(out string firstString, out string secondString);
-            string[] stringSet = new string[arrSize] { firstString, secondString };
-            stringSorting(ref stringSet);
-            Normalizator(ref stringSet);
-
-            for (int i = 0; i < arrSize; i++)
-            {
-                Console.WriteLine(stringSet[i]); i++;
-            }
+            GetStrings(ref stringArray);
+            StringSorting(ref stringArray);
+            Normalizator(ref stringArray);
+            StringCompare(ref stringArray);
 
             Console.WriteLine("\n\nPress any key to continue...");
             Console.ReadKey();
